@@ -1,6 +1,6 @@
-<!-- GETTING DATA FROM INPUTS -->
+<!-- GETTING DATA FROM FORM INPUTS -->
 
-<!-- TEXT INPUTS
+<!-- TEXT INPUTS / NUMBER INPUTS
 - There 2 main ways we can use to get data from the inputs
 
 -OPTION 1
@@ -12,6 +12,40 @@
      2.) @input 
             - use custom event listener that listens to each keystroke  and store what the user entered in some data property
             -Useful if you want to validate input on every keystrokes before the user event tries to submit anything
+
+      3.) ref=""
+
+            -ref is an inbuilt Vue property that we can add to text inputs as an attribute
+              e.g  <input id="age" name="age" type="number" ref="ageInput" />
+
+            -We can then use $refs to access the native DOM element and we can retrieve the value using the following syntax: this.$refs.ageInput.value
+         
+-->
+
+<!-- NUMBER INPUTS 
+
+-We can use the v-model and ref to get inputs from number inputs from the Form but they have different behaviors;
+
+        1.) v-model ="userage"
+
+              -When used on a number input; v-model automatically converts it from a STRING to a NUMBER datatype
+
+              -We can also force it to do that by adding number modifier to the v-model directive e.g    v-model.number="userage"
+
+              THERE ARE A QUITE A NUMBER OF V-MODEL MODIFIERS AVAILBALE TO US FROM VUE
+
+                i) v-model.lazy =>Allows you to change how Vue updates the bound property - at a lower frequency
+
+                 ii) v-model.trim =>  Tells Vue to remove the trailing /leading white spaces and at the end if any
+
+
+        2.) ref="ageInput"
+
+          -usage :  <input id="age" name="age" type="number" ref="ageInput" />
+
+          -we get the value by using : this.$refs.ageInput.value
+
+           -In most cases this returns a STRING and therefore we need to be very careful if what we are expecting is of type NUMBER ( Need to do some conversions to ) using Number()
 -->
 
 <template>
@@ -23,7 +57,7 @@
 
     <div class="form-control">
       <label for="age">Your Age (Years)</label>
-      <input id="age" name="age" type="number" />
+      <input id="age" name="age" type="number" ref="userage" />
     </div>
 
     <div class="form-control">
@@ -80,12 +114,21 @@ export default {
   data() {
     return {
       username: "",
+      userage: null,
     };
   },
   methods: {
     submitForm() {
       console.log("Username : " + this.username);
       this.username = "";
+
+      console.log(30);
+
+      console.log("User age : ");
+      console.log(this.$refs.userage.value); //Returns a STRING
+      console.log(Number(this.$refs.userage.value)); //Returns a NUMBER
+
+      this.userage = null;
     },
   },
 };
