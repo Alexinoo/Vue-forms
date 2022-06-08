@@ -1,6 +1,8 @@
 <!-- GETTING DATA FROM FORM INPUTS -->
 
 <!-- TEXT INPUTS / NUMBER INPUTS
+=================================================================
+
 - There 2 main ways we can use to get data from the inputs
 
 -OPTION 1
@@ -23,6 +25,7 @@
 -->
 
 <!-- NUMBER INPUTS 
+==================================================================
 
 -We can use the v-model and ref to get inputs from number inputs from the Form but they have different behaviors;
 
@@ -49,6 +52,7 @@
 -->
 
 <!-- DROPDOWNS  
+================================================================
 
       -v-model can also be used the same way to get input from a dropdown just like text-inputs
 
@@ -61,6 +65,28 @@
 
       -We can initialize our referrer data property with one value from the select options values and select our favorite starting value
 
+-->
+
+<!-- CHECKBOXES / RADIOBUTTONS 
+=================================================================
+
+      -v-model can also be used the same way to get selected values from a checkbox/radio buttons input 
+
+      -Names for checkboxes / radio buttons needs to match but with different values
+      -id of the inputs needs to match with the value provided in the for="" label attribute
+
+      -GOTCHAS WITH CHECKBOXES 
+      -------------------------------
+
+      -If you have multiple checkboxes with the same name like we do here , this automatically creates a group of thos checkboxes
+
+      -That means we need to handle it differently by creating an empty [] as a starting value and Vue will then add all the checked items into this []
+
+      -However , it still behaves strangely because we need to make one adjustment here;
+      
+      - And that is by adding different values to these checkboxes ; Otherwise Vue does not know which values to add into the empty []
+
+  
 -->
 
 <template>
@@ -88,17 +114,35 @@
       <h2>What are you interested in?</h2>
 
       <div>
-        <input id="interest-news" name="interest" type="checkbox" />
+        <input
+          id="interest-news"
+          name="interest"
+          type="checkbox"
+          v-model="interest"
+          value="news"
+        />
         <label for="interest-news">News</label>
       </div>
 
       <div>
-        <input id="interest-tutorials" name="interest" type="checkbox" />
+        <input
+          id="interest-tutorials"
+          name="interest"
+          type="checkbox"
+          v-model="interest"
+          value="tutorials"
+        />
         <label for="interest-tutorials">Tutorials</label>
       </div>
 
       <div>
-        <input id="interest-nothing" name="interest" type="checkbox" />
+        <input
+          id="interest-nothing"
+          name="interest"
+          type="checkbox"
+          v-model="interest"
+          value="nothing"
+        />
         <label for="interest-nothing">Nothing</label>
       </div>
     </div>
@@ -106,15 +150,15 @@
     <div class="form-control">
       <h2>How do you learn?</h2>
       <div>
-        <input id="how-video" name="how" type="radio" />
+        <input id="how-video" name="how" type="radio" v-model="how" value="video" />
         <label for="how-video">Video Courses</label>
       </div>
       <div>
-        <input id="how-blogs" name="how" type="radio" />
+        <input id="how-blogs" name="how" type="radio" v-model="how" value="blogs" />
         <label for="how-blogs">Blogs</label>
       </div>
       <div>
-        <input id="how-other" name="how" type="radio" />
+        <input id="how-other" name="how" type="radio" v-model="how" value="other" />
         <label for="how-other">Other</label>
       </div>
     </div>
@@ -131,6 +175,8 @@ export default {
       username: "",
       userage: null,
       referrer: "google",
+      interest: [],
+      how: null,
     };
   },
   methods: {
@@ -147,6 +193,16 @@ export default {
 
       console.log("Referrer : " + this.referrer);
       this.referrer = "google"; //Then reset it back to google
+
+      console.log("CheckBoxes");
+      console.log(this.interest);
+
+      console.log("Radio Buttons");
+      console.log(this.how);
+
+      // Reset to null
+      this.interest = [];
+      this.how = null;
     },
   },
 };
