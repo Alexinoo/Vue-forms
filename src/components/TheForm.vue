@@ -48,6 +48,21 @@
            -In most cases this returns a STRING and therefore we need to be very careful if what we are expecting is of type NUMBER ( Need to do some conversions to ) using Number()
 -->
 
+<!-- DROPDOWNS  
+
+      -v-model can also be used the same way to get input from a dropdown just like text-inputs
+
+  e.g.  <select id="referrer" name="referrer" v-model="referrer">
+              <option value="google">Google</option>
+              <option value="wom">Word of mouth</option>
+              <option value="newspaper">Newspaper</option>
+
+      -Values from the select options will be then stored in the referrer data property whenever we change a value
+
+      -We can initialize our referrer data property with one value from the select options values and select our favorite starting value
+
+-->
+
 <template>
   <form @submit.prevent="submitForm">
     <div class="form-control">
@@ -62,7 +77,7 @@
 
     <div class="form-control">
       <label for="referrer">How did you hear about us?</label>
-      <select id="referrer" name="referrer">
+      <select id="referrer" name="referrer" v-model="referrer">
         <option value="google">Google</option>
         <option value="wom">Word of mouth</option>
         <option value="newspaper">Newspaper</option>
@@ -115,6 +130,7 @@ export default {
     return {
       username: "",
       userage: null,
+      referrer: "google",
     };
   },
   methods: {
@@ -127,8 +143,10 @@ export default {
       console.log("User age : ");
       console.log(this.$refs.userage.value); //Returns a STRING
       console.log(Number(this.$refs.userage.value)); //Returns a NUMBER
-
       this.userage = null;
+
+      console.log("Referrer : " + this.referrer);
+      this.referrer = "google"; //Then reset it back to google
     },
   },
 };
