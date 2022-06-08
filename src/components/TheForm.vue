@@ -102,11 +102,42 @@
   
 -->
 
+<!-- ADDING A BASIC FORM VALIDATION
+==========================================================================================================================================================================
+
+-We can validate input values on every keystrokes or whenever the input blurs i.e When the input loses focus
+
+-We can do this by adding @blur event and then check whether the input entered is valid and if not shiw the user an error msg;
+
+  e.g. <input id="user-name" name="user-name" type="text" v-model="username" @blur=""/>
+
+  -We can  add a span that will be rendered conditionally if usernameValidity is invalid
+    
+    e.g. <span v-if="usernameValidity === 'invalid'">Please enter a valid name!</span>
+
+  -We can also add a class dynamically for  styling the div for the same condition
+  
+  .e.g.   <div class="form-control" :class="{ invalid: usernameValidity === 'invalid' }">
+
+
+
+
+
+
+-->
+
 <template>
   <form @submit.prevent="submitForm">
-    <div class="form-control">
+    <div class="form-control" :class="{ invalid: usernameValidity === 'invalid' }">
       <label for="user-name">Your Name</label>
-      <input id="user-name" name="user-name" type="text" v-model="username" />
+      <input
+        id="user-name"
+        name="user-name"
+        type="text"
+        v-model.trim="username"
+        @blur="validateName"
+      />
+      <p v-if="usernameValidity === 'invalid'">Please enter a valid name!</p>
     </div>
 
     <div class="form-control">
@@ -197,6 +228,7 @@ export default {
       interest: [],
       how: null,
       confirm: false,
+      usernameValidity: "pending",
     };
   },
   methods: {
@@ -228,6 +260,13 @@ export default {
       console.log(this.confirm);
 
       this.confirm = false;
+    },
+    validateName() {
+      if (this.username === "") {
+        this.usernameValidity = "invalid";
+      } else {
+        this.usernameValidity = "valid";
+      }
     },
   },
 };
