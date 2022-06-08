@@ -89,6 +89,19 @@
   
 -->
 
+<!-- SINGLE CHECK - PROBABLY FOR ACCEPTING TERMS AND CONDITIONS
+=================================================================
+
+      -So how can we get the value of a single checkbox since its not a group but just a single value 
+
+      -We can add confirm as a data-property and set it to false initially ; Then bind it with v-model
+
+      -In summary , if you have a group of checkboxes which share the same name to yield value , then you get an array of the selected checkboxes - values IS A MUST attribute
+
+      In case of a single checkbox you get true / false values
+  
+-->
+
 <template>
   <form @submit.prevent="submitForm">
     <div class="form-control">
@@ -162,6 +175,12 @@
         <label for="how-other">Other</label>
       </div>
     </div>
+
+    <div class="form-control">
+      <input type="checkbox" name="terms" id="terms" v-model="confirm" />
+      <label for="terms"> Agree to our Terms of use</label>
+    </div>
+
     <div>
       <button>Save Data</button>
     </div>
@@ -177,6 +196,7 @@ export default {
       referrer: "google",
       interest: [],
       how: null,
+      confirm: false,
     };
   },
   methods: {
@@ -203,6 +223,11 @@ export default {
       // Reset to null
       this.interest = [];
       this.how = null;
+
+      console.log("Confirm ..?");
+      console.log(this.confirm);
+
+      this.confirm = false;
     },
   },
 };
