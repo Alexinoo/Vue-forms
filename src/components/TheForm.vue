@@ -118,9 +118,48 @@
   -We can also add a class dynamically for  styling the div for the same condition
   
   .e.g.   <div class="form-control" :class="{ invalid: usernameValidity === 'invalid' }">
+  
+-->
+
+<!--BUILDING A CUSTOM CONTOL COMPONENT
+=========================================================================================
+
+- Added RatingControl component with three buttons to allow a user to select a rating
+
+-The idea is allow a user to select a rating which should be highlighted and then saved as part of the overall form
+
+-N/B : Added behaviour of clicking and selecting active button in the parent component (Rating Control)
+
+-BUt how do select the value of the button that was Clicked ????????????
+
+-Well it turns out that we can use v-model on a component and then simply bind the value that this control has internally to some data property that we store here;
+
+-Add rating data property and set it to null ; Then bind it with v-model on the rating control component
+
+-Leak up => v-model is a shortcut  that combines @input="" and :value="" and that is something we can leverage
+
+-Vue will set a very specific prop if you use v-model on a component and it will listen to a very specific event which you can emit in that component.
+
+-Now which prop/event is that; 'Let's go to rating control and receive that prop;
+
+-THEREFORE  USING V-MODEL ON A CUSTOM COMPONENT IS LIKE MANUALLY BINDING THE :model-value="" prop like this.
+    .eg.
+    <rating-control v-model="rating" :model-value="" ></rating-control>
+
+  -THAT IS ONE THING V-MODEL DOES UNDER THE HOOD ON CUSTOM COMPONENTS 
 
 
+-THEREFORE  USING V-MODEL ON A CUSTOM COMPONENT IS LIKE MANUALLY BINDING THE :model-value="" and listening to @update:modelValue="" event
 
+.e.g.   <rating-control v-model="rating" :model-value="" @update:modelValue="" ></rating-control>
+
+-If use v-model="rating" is the same as like doing the 2 (  :model-value="" @update:modelValue="" )
+
+-BUT THERE IS A PROBLEM WHEN WE IT COMES TO RESETTING
+
+-The reset is not in in sync with the value stored in rating here
+
+Therefore go to RatingControl and we can can work around that problem - continue.. in RatingControl
 
 
 
@@ -212,6 +251,10 @@
       <label for="terms"> Agree to our Terms of use</label>
     </div>
 
+    <div class="form-control">
+      <rating-control v-model="rating"></rating-control>
+    </div>
+
     <div>
       <button>Save Data</button>
     </div>
@@ -219,7 +262,12 @@
 </template>
 
 <script>
+import RatingControl from "./RatingControl.vue";
+
 export default {
+  components: {
+    RatingControl,
+  },
   data() {
     return {
       username: "",
@@ -229,6 +277,7 @@ export default {
       how: null,
       confirm: false,
       usernameValidity: "pending",
+      rating: null,
     };
   },
   methods: {
@@ -260,6 +309,11 @@ export default {
       console.log(this.confirm);
 
       this.confirm = false;
+
+      console.log("Rating : ");
+      console.log(this.rating);
+
+      this.rating = null;
     },
     validateName() {
       if (this.username === "") {
